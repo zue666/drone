@@ -1,0 +1,36 @@
+kind: pipeline
+name: default
+type: kubernetes
+
+trigger:
+  branch:
+    - master
+    - develop
+    - staging
+  event:
+    - push
+    - custom
+  ref:
+    - refs/heads/master
+
+steps:
+  - name: submodules
+    image: alpine/git
+    commands:
+      - echo hello
+      - echo build
+---
+kind: pipeline
+name: deploy_staging
+type: kubernetes
+trigger:
+  event:
+    - promote
+  target:
+    - staging
+steps:
+  - name: clone extra repo
+    image: alpine
+    commands:
+      - echo hello
+      - echo promote
